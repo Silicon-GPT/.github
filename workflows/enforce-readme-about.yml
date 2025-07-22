@@ -1,0 +1,78 @@
+name: Enforce README and About
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write  # Needed to open issues
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check for README.md
+        id: check_readme
+        run: |
+          if [ ! -f README.md ]; then
+            echo "README_FOUND=false" >> $GITHUB_ENV
+          else
+            echo "README_FOUND=true" >> $GITHUB_ENV
+          fi
+
+      - name: Check for About (Description)
+        id: check_about
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO_NAME="${{ github.repository }}"
+          DESC=$(gh repo view "$REPO_NAME" --json description -q .description || echo "")
+          if [ -z "$DESC" ]; then
+            echo "ABOUT_FOUND=false" >> $GITHUB_ENV
+          else
+            echo "ABOUT_FOUND=true" >> $GITHUB_ENV
+          fi
+
+      - name: Fail the PR if README or About is missing
+        run: |
+          echo "README_FOUND=$README_FOUND"
+          echo "ABOUT_FOUND=$ABOUT_FOUND"
+
+          if [ "$README_FOUND" = "false" ] || [ "$ABOUT_FOUND" = "false" ]; then
+            echo "❌ Missing README.md or repository description (About)"
+            exit 1
+          fi
+
+      - name: Create GitHub Issue
+        if: env.README_FOUND == 'false' || env.ABOUT_FOUND == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = "🚨 Policy Violation: Missing README or About";
+            const body = `This repository does not comply with the organization policy:\n
+README.md present: **${process.env.README_FOUND}**
+About/Description present: **${process.env.ABOUT_FOUND}**\n
+Please fix this immediately.`;
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open"
+            });
+
+            const existing = issues.find(i => i.title === title);
+            if (!existing) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body
+              });
+            }
