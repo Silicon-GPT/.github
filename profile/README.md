@@ -92,7 +92,7 @@ Bengaluru - 560102, India
 
 **Get in Touch**
 - **Email**: [hr@si-gpt.com](mailto:hr@si-gpt.com)
-- **Phone**: [+91 8951179880](tel:+918951179880)  
+- **Phone**: [+91 9992223331](tel:+919992223331)  
 - **Website**: [www.si-gpt.com](https://www.si-gpt.com/)
 
 ---
