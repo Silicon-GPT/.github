@@ -1,4 +1,4 @@
-![SI-GPT Logo](profile/SI-GPT_Updated_Logo-removebg-preview.png)
+![SI-GPT Logo](/SI-GPT_Updated_Logo-removebg-preview.png)
 
 # Welcome to SI-GPT 🚀
 
