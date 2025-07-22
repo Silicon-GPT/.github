@@ -5,7 +5,7 @@
 # SI-GPT
 ### Innovating at the Intersection of Silicon and Intelligence
 
-**Website:** [si-gpt.com](https://www.si-gpt.com/) | **Email:** [hr@si-gpt.com](mailto:hr@si-gpt.com) | **Phone:** [+91 8951179880](tel:+918951179880)
+**Website:** [si-gpt.com](https://www.si-gpt.com/) | **Email:** [hr@si-gpt.com](mailto:hr@si-gpt.com) | **Phone:** [+91 9992223331](tel:+919992223331)
 
 </div>
 
