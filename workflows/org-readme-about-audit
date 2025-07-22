@@ -1,0 +1,64 @@
+name: Audit Org Repositories for README and About
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # Every 12 hours
+  workflow_dispatch:
+
+jobs:
+  audit-org-repos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run Org Audit Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_PAT }}
+          ORG_NAME: your-org-name  # Replace with your actual org name
+        run: |
+          python3 <<EOF
+          import requests
+
+          ORG = "${ORG_NAME}"
+          HEADERS = {
+              "Authorization": f"token ${GITHUB_TOKEN}",
+              "Accept": "application/vnd.github+json"
+          }
+
+          def get_all_repos(org):
+              repos = []
+              page = 1
+              while True:
+                  url = f"https://api.github.com/orgs/{org}/repos?per_page=100&page={page}"
+                  r = requests.get(url, headers=HEADERS)
+                  if r.status_code != 200 or not r.json():
+                      break
+                  repos.extend(r.json())
+                  page += 1
+              return repos
+
+          for repo in get_all_repos(ORG):
+              name = repo['name']
+              full_name = repo['full_name']
+              has_readme = True
+              desc = repo.get('description', '')
+
+              readme_resp = requests.get(f"https://api.github.com/repos/{full_name}/readme", headers=HEADERS)
+              if readme_resp.status_code != 200:
+                  has_readme = False
+
+              missing = []
+              if not has_readme:
+                  missing.append("README.md")
+              if not desc:
+                  missing.append("About/description")
+
+              if missing:
+                  print(f"[❌] {full_name} is missing: {', '.join(missing)}")
+              else:
+                  print(f"[✅] {full_name} is OK")
+          EOF
