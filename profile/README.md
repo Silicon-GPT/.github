@@ -5,7 +5,7 @@
 # SI-GPT
 ### Innovating at the Intersection of Silicon and Intelligence
 
-**Website:** [si-gpt.com](https://www.si-gpt.com/) | **Email:** [hr@si-gpt.com](mailto:hr@si-gpt.com) | **Phone:** [+91 9992223331](tel:+919992223331)
+**Website:** [si-gpt.com](https://www.si-gpt.com/) | **Email:** [hr@si-gpt.com](mailto:hr@si-gpt.com) |
 
 </div>
 
@@ -92,7 +92,6 @@ Bengaluru - 560102, India
 
 **Get in Touch**
 - **Email**: [hr@si-gpt.com](mailto:hr@si-gpt.com)
-- **Phone**: [+91 9992223331](tel:+919992223331)  
 - **Website**: [www.si-gpt.com](https://www.si-gpt.com/)
 
 ---
